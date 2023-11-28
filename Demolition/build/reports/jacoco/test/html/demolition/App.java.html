@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>App.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Demolition</a> &gt; <a href="index.source.html" class="el_package">demolition</a> &gt; <span class="el_source">App.java</span></div><h1>App.java</h1><pre class="source lang-java linenums">package demolition;
+
+import processing.core.PApplet;
+  /**
+  * The App class mainly use to create a game play screem with setted &lt;b&gt;WIDTH&lt;/b&gt; 480 and &lt;b&gt;HEIGHT&lt;/b&gt; 480,
+  * &lt;b&gt;FPS&lt;/b&gt; setted to 60.
+  */
+public class App extends PApplet{
+
+    public static final int WIDTH = 480;
+    public static final int HEIGHT = 480;
+    public static final int FPS = 60;
+    private Levels levels;
+    private boolean noFile;
+    private boolean switches;
+    /**
+    */
+<span class="fc" id="L18">    public App() {</span>
+<span class="fc" id="L19">      this.switches = true;</span>
+<span class="fc" id="L20">      this.noFile = true;</span>
+<span class="fc" id="L21">      this.levels = new Levels();</span>
+<span class="fc" id="L22">    }</span>
+    /**
+    *Set the game window in setted height and width
+    *@see &lt;a href=https://processing.github.io/processing-javadocs/core/processing/core/PApplet.html#settings--&gt;settings()&lt;/a&gt;
+    */
+    public void settings() {
+<span class="fc" id="L28">      size(WIDTH, HEIGHT);</span>
+<span class="fc" id="L29">    }</span>
+    /**
+    *Set the game in 60 fps in default, and setup all the gameObject and game levels in the Levels object
+    *@see &lt;a href=https://processing.github.io/processing-javadocs/core/processing/core/PApplet.html#setup--&gt;setup()&lt;/a&gt;
+    */
+    public void setup() {
+<span class="fc" id="L35">      frameRate(FPS);</span>
+<span class="fc" id="L36">      this.levels.setup(this);</span>
+<span class="fc" id="L37">    }</span>
+    /**
+    *(Begin auto-generated from draw.xml), similar to draw() in PApplet, but draw all the objects inside the levels class instead
+    *@see &lt;a href=https://processing.github.io/processing-javadocs/core/processing/core/PApplet.html#draw--&gt;draw()&lt;/a&gt;
+    */
+    public void draw() {
+<span class="fc" id="L43">      background(255,150,0);</span>
+<span class="fc" id="L44">      this.levels.draw(this);</span>
+<span class="fc" id="L45">    }</span>
+    /**
+    *Chaneg the default path of the json file to a new json file
+    *@param newPath, String must not be null and can not be &quot;&quot;
+    */
+    public void setConfig(String newPath) {
+<span class="pc bpc" id="L51" title="2 of 4 branches missed.">      if (newPath == null || newPath.length() == 0) {</span>
+<span class="nc" id="L52">        return;</span>
+      } else {
+<span class="fc" id="L54">        levels.changePath(newPath);</span>
+      }
+<span class="fc" id="L56">    }</span>
+    /**
+    *Return the Levels object in the App
+    *@return the Levels Object
+    */
+    public Levels getLevels() {
+<span class="fc" id="L62">      return this.levels;</span>
+    }
+    /**
+    *Similar to keyPressed in PApplet and make sure it can detect user input if the gameObject bombGuy is alive and has not yet reach the goal, as well as make sure the usser doesnt hold the key
+    *@see &lt;a href=https://processing.github.io/processing-javadocs/core/processing/core/PApplet.html#keyPressed&gt;keyPressed()&lt;/a&gt;
+    */
+    public void keyPressed() {
+<span class="pc bpc" id="L69" title="3 of 6 branches missed.">      if (this.levels.isAlive() &amp;&amp; this.switches == true &amp;&amp; this.levels.getIndex() &lt; this.levels.numOfLevel()) {</span>
+<span class="fc" id="L70">          this.levels.getLevel().getBombGuy().pressKey(this.keyCode);</span>
+          //place the bomb. it might be a design fault..
+<span class="pc bpc" id="L72" title="1 of 4 branches missed.">          if (this.keyCode == 32 || this.key == 32) {</span>
+<span class="fc" id="L73">              this.levels.getLevel().getBombGuy().placeBomb(this);</span>
+          }
+<span class="fc" id="L75">          this.switches = false;</span>
+        }
+<span class="fc" id="L77">    }</span>
+    /**
+    *Similar to keyReleased in Papplet and make sure to obtain the next user input if the key has been release
+    *@see &lt;a href=https://processing.github.io/processing-javadocs/core/processing/core/PApplet.html#keyReleased&gt;keyReleased()&lt;/a&gt;
+    */
+    public void keyReleased() {
+<span class="fc" id="L83">      this.switches = true;</span>
+<span class="fc" id="L84">    }</span>
+    /**
+    *Run Papplet
+    @param args, String arrays
+    */
+    public static void main(String[] args) {
+<span class="nc" id="L90">      PApplet.main(&quot;demolition.App&quot;);</span>
+<span class="nc" id="L91">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

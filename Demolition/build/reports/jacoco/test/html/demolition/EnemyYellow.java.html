@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EnemyYellow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Demolition</a> &gt; <a href="index.source.html" class="el_package">demolition</a> &gt; <span class="el_source">EnemyYellow.java</span></div><h1>EnemyYellow.java</h1><pre class="source lang-java linenums">package demolition;
+
+import processing.core.PImage;
+import processing.core.PApplet;
+/**
+*The yellow Enemy that move in a certain direction cycle after collided the solid or broken wall
+*/
+public class EnemyYellow extends Player implements Enemy {
+    private int moveCounter;
+    /**
+    *Constructor for Yellwo Enemy inherited from Player
+    *@param x x-coordinate of the Yellow Enemy
+    *@param y y-coordinate of the Yellow Enemy
+    *@param matrixX  the grid position x of the Yellow Enemy, it indicates which row the Yellow Enemy is in
+    *@param matrixY  the grid position y of the Yellow Enemy, it indicates which column the Yellow Enemy is in
+    *@param map  the 2-D array that store all the wall object and its child
+    *@see Player#Player
+    *@see GameObject
+    *@see Wall
+    */
+    public EnemyYellow(int x, int y, int matrixX, int matrixY, Wall[][] map) {
+<span class="fc" id="L22">      super(x, y, matrixX, matrixY, map);</span>
+<span class="fc" id="L23">      this.moveCounter = 1;</span>
+<span class="fc" id="L24">    }</span>
+    /**
+    *Yellow Enemy can auto find path after collide the wall with the help of enmu Direction cycle
+    *@see Player#move
+    *@see Enemy
+    *@see Direction
+    */
+    public void move() {
+      //Keep looking for way out until it is not collide with the wall
+<span class="fc bfc" id="L33" title="All 2 branches covered.">      while (this.checkCollide(this.move) == false) {</span>
+        //Use the Modular arithmetic to cycle the Direction enum
+<span class="fc" id="L35">        int num = (this.move.ordinal() + this.moveCounter) % 4;</span>
+<span class="fc" id="L36">        this.move = direction[num];</span>
+<span class="fc" id="L37">      }</span>
+<span class="fc" id="L38">        this.enemyMovePattern(this);</span>
+<span class="fc" id="L39">      }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

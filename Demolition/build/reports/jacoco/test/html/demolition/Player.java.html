@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Demolition</a> &gt; <a href="index.source.html" class="el_package">demolition</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">package demolition;
+
+import processing.core.PImage;
+import processing.core.PApplet;
+
+import java.util.HashMap;
+import java.util.ArrayList;
+/**
+* The Player class is a abstract class for all the movable object in the game such as BombGuy, Red enemy and Yellow enemy. It is inherited from the GameObject
+*/
+public abstract class Player extends GameObject{
+    /**
+    *Each grid space in term of pixel size, so Player can move one grid
+    */
+<span class="fc" id="L15">    protected final int speed = 32;</span>
+    /**
+    *The grid position x of the Player, it indicates which row the Player is in
+    */
+    protected int matrixX;
+    /**
+    *The grid position y of the Player, it indicates which column the Player is in
+    */
+    protected int matrixY;
+    /**
+    *The 2-D array that store all the wall object and its child
+    */
+    protected Wall[][] wallMap;
+    /**
+    *The image HashMap that store Direction as key and an array of PImage as value
+    */
+    protected HashMap&lt;Direction, PImage[]&gt; imageHashMap;
+    /**
+    *Use a to cycle the walk animation
+    */
+    protected int counter;
+    /**
+    *The direction that Player face
+    */
+    protected Direction move;
+    /**
+    *The direction array store the values from Direction enum
+    */
+    protected Direction[] direction;
+    /**
+    *An index to help us in walk anaimation cycle
+    */
+    protected int index;
+    /**
+    *Constructor for Player
+    *@param x  x-coordinate of the Player
+    *@param y  y-coordinate of the Player
+    *@param matrixX  the grid position x of the Player, it indicates which row the Player is in
+    *@param matrixY  the grid position y of the Player, it indicates which column the Player is in
+    *@param wallMap  the 2-D array that store all the wall object and its child
+    *@see GameObject
+    *@see Wall
+    */
+    public Player(int x, int y, int matrixX, int matrixY, Wall[][] wallMap) {
+<span class="fc" id="L59">      super(x, y-16);</span>
+<span class="fc" id="L60">      this.matrixX = matrixX;</span>
+<span class="fc" id="L61">      this.matrixY = matrixY;</span>
+<span class="fc" id="L62">      this.wallMap = wallMap;</span>
+<span class="fc" id="L63">      this.counter = 0;</span>
+<span class="fc" id="L64">      this.imageHashMap = new HashMap&lt;Direction, PImage[]&gt;();</span>
+<span class="fc" id="L65">      this.direction = Direction.values();</span>
+<span class="fc" id="L66">      this.move = direction[2];</span>
+<span class="fc" id="L67">      this.index = 0;</span>
+<span class="fc" id="L68">    }</span>
+    /**
+    *Return the column number of the Player
+    *@return the int value of the column number
+    */
+    public int getMatrixY() {
+<span class="fc" id="L74">      return this.matrixY;</span>
+    }
+    /**
+    *Return the index of the walk animation cycle
+    *@return the int value of index
+    */
+    public int getIndex() {
+<span class="fc" id="L81">        return this.index;</span>
+    }
+    /**
+    *Return the row number of the Player
+    *@return the int value of the row number
+    */
+    public int getMatrixX() {
+<span class="fc" id="L88">      return this.matrixX;</span>
+    }
+    /**
+    *Set which direction the player is facing
+    *@param direction the Direction value from Direction enmu
+    *@see Direction
+    */
+    public void setDraw(Direction direction) {
+<span class="fc" id="L96">      this.move = direction;</span>
+<span class="fc" id="L97">    }</span>
+    /**
+    *Draw the player animation walk cycle
+    *@param app the PApplet object
+    *@see GameObject#setSprite(PImage sprite)
+    *@see &lt;a href=https://processing.github.io/processing-javadocs/core/processing/core/PApplet.html#image-processing.core.PImage-float-float-&gt;image()&lt;/a&gt;
+    */
+    public void draw(PApplet app) {
+<span class="fc" id="L105">      PImage[] spriteArray = this.imageHashMap.get(move);</span>
+<span class="fc" id="L106">      app.image(spriteArray[this.index], this.x, this.y);</span>
+<span class="fc" id="L107">    }</span>
+    /**
+    *Cycle the animation by tick
+    */
+    public void tick() {
+<span class="fc" id="L112">      this.index = (this.counter/12) % 4;</span>
+<span class="fc" id="L113">      this.counter += 1;</span>
+<span class="fc" id="L114">    }</span>
+    /**
+    *Set the Pimage and store into player pImageArray and it is overloading method
+    *@param app the PApplet object
+    *@param path a String that lead to the image need to load
+    *@see GameObject#setSprite(PImage sprite, String path)
+    *@see &lt;a href=https://processing.github.io/processing-javadocs/core/processing/core/PApplet.html#image-processing.core.PImage-float-float-&gt;image()&lt;/a&gt;
+    */
+    public void setSprite(PApplet app, String path) {
+<span class="fc" id="L123">      PImage [] pImageArray = new PImage[4];</span>
+      String str;
+      //set the walk cycle animation into array
+<span class="fc bfc" id="L126" title="All 2 branches covered.">      for (int i = 0; i &lt; 4; i++) {</span>
+<span class="fc" id="L127">          pImageArray = new PImage[4];</span>
+          //image number start in 1
+<span class="fc bfc" id="L129" title="All 2 branches covered.">          for (int y = 1; y &lt; 5; y++) {</span>
+<span class="fc" id="L130">              str = path + &quot;_&quot; + direction[i] + Integer.toString(y) +&quot;.png&quot;;</span>
+<span class="fc" id="L131">              pImageArray[y-1] = app.loadImage(str);</span>
+          }
+<span class="fc" id="L133">          this.imageHashMap.put(direction[i], pImageArray);</span>
+      }
+<span class="fc" id="L135">    }</span>
+    /**
+    *Check if the player is collided to the SolidWall or BroeknWall
+    *@param move, the Direction value from Direction enmu
+    *@return true, if the player did not collide the wall and the postion is updated, else return false and Player is collided to the wall
+    *@see SolidWall
+    *@see BrokenWall
+    */
+    public boolean checkCollide(Direction move) {
+      //create temp grid postion
+<span class="fc" id="L145">      int checkMoveX = this.matrixX;</span>
+<span class="fc" id="L146">      int checkMoveY = this.matrixY;</span>
+      //defence programming
+<span class="fc bfc" id="L148" title="All 2 branches covered.">      if (this.wallMap == null) {</span>
+<span class="fc" id="L149">        return false;</span>
+      }
+      //check if collsion is happened
+      //check if the up position is blocked by updated the temp position
+<span class="fc bfc" id="L153" title="All 2 branches covered.">      if (move == direction[0]) {</span>
+<span class="fc" id="L154">        checkMoveX = this.matrixX - 1;</span>
+      //check if the right position is blocked by updated the temp position
+<span class="fc bfc" id="L156" title="All 2 branches covered.">      } else if (move == direction[1]) {</span>
+<span class="fc" id="L157">        checkMoveY = this.matrixY + 1;</span>
+      //check if the down position is blocked by updated the temp position
+<span class="fc bfc" id="L159" title="All 2 branches covered.">      } else if (move == direction[2]) {</span>
+<span class="fc" id="L160">        checkMoveX = this.matrixX + 1;</span>
+      //check if the left position is blocked by updated the temp position
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">      } else if (move == direction[3]) {</span>
+<span class="fc" id="L163">        checkMoveY = this.matrixY - 1;</span>
+      }
+      //check if the position is blcoked on the current temp position
+<span class="fc bfc" id="L166" title="All 2 branches covered.">      if (this.wallMap[checkMoveX][checkMoveY].isSolid() == false) {</span>
+        //update position if it is true
+<span class="fc" id="L168">        this.matrixX = checkMoveX;</span>
+<span class="fc" id="L169">        this.matrixY = checkMoveY;</span>
+<span class="fc" id="L170">        return true;</span>
+      } else {
+        //dont updat if it is false and return false
+<span class="fc" id="L173">        return false;</span>
+      }
+    }
+    /**
+    *Move the Player depend on the Player type such as BombGuys and enemies
+    */
+    public abstract void move();
+    /**
+    *Check if the Player object is killed by the Bomb
+    *@param explosionX the row number of the bomb explosion impact position in the wallMap
+    *@param explosionY the column number of the bomb explosion impact position in teh wallMap
+    *@return true, if the bomb explosion did impact the player, else return false
+    */
+    public boolean blastDie (int explosionX, int explosionY) {
+<span class="fc bfc" id="L187" title="All 4 branches covered.">      if ( this.matrixX == explosionX &amp;&amp; this.matrixY == explosionY) {</span>
+<span class="fc" id="L188">          return true;</span>
+      }
+<span class="fc" id="L190">      return false;</span>
+    }
+    /**
+    *Check if the Player object is one the grid position that is provided
+    *@param x the row number in the wallMap grid
+    *@param y the column number in the wallMap grid
+    *@return true, if the player is on the postion grid, else return false
+    */
+    public boolean checkGrid(int x, int y) {
+<span class="fc bfc" id="L199" title="All 4 branches covered.">      if (this.matrixX == x &amp;&amp; this.matrixY == y) {</span>
+<span class="fc" id="L200">          return true;</span>
+      }
+<span class="fc" id="L202">      return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Bomb.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Demolition</a> &gt; <a href="index.source.html" class="el_package">demolition</a> &gt; <span class="el_source">Bomb.java</span></div><h1>Bomb.java</h1><pre class="source lang-java linenums">package demolition;
+
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.stream.*;
+import java.util.Arrays;
+
+import processing.core.PImage;
+import processing.core.PApplet;
+/**
+* The Bomb class determine where the bomb going to explode and how does the explosion impact on other GameObject such as wall and player
+*/
+public class Bomb extends GameObject {
+  /**
+  * The ExplosionDirection enum has three direction that Bomb can impact on
+  */
+<span class="fc" id="L17">    public enum ExplosionDirection {</span>
+      /**
+      *Explosion impact along the x asix
+      */
+<span class="fc" id="L21">      horizontal,</span>
+      /**
+      *Explosion impact along the y asix
+      */
+<span class="fc" id="L25">      vertical,</span>
+      /**
+      *Explosion impact on where the Bomb is place
+      */
+<span class="fc" id="L29">      centre;</span>
+    }
+    private int matrixX;
+    private int matrixY;
+    private int timeTillExplorsion;
+    private PImage[] pImageArray;
+    private HashMap&lt;ExplosionDirection, PImage&gt; explosionHashMap;
+    private ExplosionDirection[] direction;
+    private Wall[][] wallMap;
+    private HashMap&lt;int[], PImage&gt; explosionAnimationHashMap;
+    private ArrayList&lt;Player&gt; enemyArrayList;
+    private BombGuy bombGuy;
+    private int index;
+    /**
+    *Constructor for Bomb
+    *@param x  x-coordinate of the Bomb
+    *@param y  y-coordinate of the Bomb
+    *@param matrixX  the grid position x of the Bomb, it indicates which row the Bomb is in
+    *@param matrixY  the grid position y of the Bomb, it indicates which column the Bomb is in
+    *@param wallMap  the 2-D array that store all the wall object and its child
+    *@param enemyArrayList the arrayList that store players that classify as enemies
+    *@param bombGuy the BombGuy that placed the bomb
+    *@see Player
+    *@see GameObject
+    *@see Wall
+    */
+    public Bomb(int x, int y, int matrixX, int matrixY, Wall[][] wallMap, ArrayList&lt;Player&gt; enemyArrayList, BombGuy bombGuy) {
+<span class="fc" id="L56">      super (x, y+16);</span>
+<span class="fc" id="L57">      this.matrixX = matrixX;</span>
+<span class="fc" id="L58">      this.matrixY = matrixY;</span>
+<span class="fc" id="L59">      this.timeTillExplorsion = 149;</span>
+<span class="fc" id="L60">      this.pImageArray = new PImage[8];</span>
+<span class="fc" id="L61">      this.explosionHashMap = new HashMap&lt;ExplosionDirection, PImage&gt;();</span>
+<span class="fc" id="L62">      this.explosionAnimationHashMap = new HashMap&lt;int[], PImage&gt;();</span>
+<span class="fc" id="L63">      this.direction = ExplosionDirection.values();</span>
+<span class="fc" id="L64">      this.wallMap = wallMap;</span>
+<span class="fc" id="L65">      this.enemyArrayList = enemyArrayList;</span>
+<span class="fc" id="L66">      this.bombGuy = bombGuy;</span>
+<span class="fc" id="L67">      this.index = 0;</span>
+<span class="fc" id="L68">    }</span>
+    /**
+    *Set the Pimage that represent the Bomb ticking animation and store into Bomb pImageArray and it is overloading method
+    *@param app the PApplet object
+    *@param path a String that lead to the image need to load
+    *@see GameObject#setSprite(PImage sprite)
+    *@see &lt;a href=https://processing.github.io/processing-javadocs/core/processing/core/PApplet.html#image-processing.core.PImage-float-float-&gt;image()&lt;/a&gt;
+    */
+    public void setSprite(PApplet app, String path) {
+<span class="fc" id="L77">      String str = path +&quot;.png&quot;;</span>
+<span class="fc" id="L78">      pImageArray[0] = app.loadImage(str);</span>
+
+<span class="fc bfc" id="L80" title="All 2 branches covered.">      for (int y = 1; y &lt; 8; y++) {</span>
+<span class="fc" id="L81">          str = path + Integer.toString(y) +&quot;.png&quot;;</span>
+<span class="fc" id="L82">          pImageArray[y] = app.loadImage(str);</span>
+      }
+<span class="fc" id="L84">    }</span>
+    /**
+    *Set the Explosion animation by the given path
+    *@param app the PApplet object
+    *@param path a stirng that lead to the image location
+    *@see &lt;a href=https://processing.github.io/processing-javadocs/core/processing/core/PApplet.html#image-processing.core.PImage-float-float-&gt;image()&lt;/a&gt;
+    */
+    public void setExplosionSprite(PApplet app, String path) {
+      String str;
+      //loop through the diection value so the explosion can load in the corresponding key
+<span class="fc bfc" id="L94" title="All 2 branches covered.">      for (int i = 0; i &lt; direction.length; i++) {</span>
+<span class="fc" id="L95">          str = path + direction[i] + &quot;.png&quot;;</span>
+<span class="fc" id="L96">          this.explosionHashMap.put(direction[i], app.loadImage(str));</span>
+      }
+<span class="fc" id="L98">      this.blockExplosion(direction[2], 0, 0);</span>
+<span class="fc" id="L99">      this.blockExplosion(direction[1], 1, 0);</span>
+<span class="fc" id="L100">      this.blockExplosion(direction[1],-1, 0);</span>
+<span class="fc" id="L101">      this.blockExplosion(direction[0],0, 1);</span>
+<span class="fc" id="L102">      this.blockExplosion(direction[0],0, -1);</span>
+<span class="fc" id="L103">    }</span>
+    /**
+    *Return the explorsion direction array
+    *@return ExplosionDirection enmu value
+    */
+    public ExplosionDirection[] getExplosionDirection() {
+<span class="fc" id="L109">      return this.direction;</span>
+    }
+    /**
+    *Return the count down time that Bomb going to explode
+    *@return the Bomb explosion count down time
+    */
+    public int getTime() {
+<span class="fc" id="L116">      return this.timeTillExplorsion;</span>
+    }
+    /**
+    *Check if the explosion impact have killed the BombGuy
+    *@see BombGuy
+    */
+    public void checkDie() {
+<span class="fc bfc" id="L123" title="All 2 branches covered.">      for (int[] i: this.explosionAnimationHashMap.keySet()) {</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (this.bombGuy.blastDie(i[2], i[3])) {</span>
+<span class="fc" id="L125">            this.bombGuy.lossLive();</span>
+        }
+<span class="fc" id="L127">      }</span>
+<span class="fc" id="L128">    }</span>
+    /**
+    *Check if the Bomb have killed the enemy in the enemyArrayList and remove if there is any
+    *@see Player#blastDie
+    */
+    public void blastDieBomb() {
+<span class="fc bfc" id="L134" title="All 2 branches covered.">      for (int[] i: this.explosionAnimationHashMap.keySet()) {</span>
+<span class="fc" id="L135">          this.enemyArrayList.removeIf((x) -&gt; x.blastDie(i[2], i[3]));</span>
+<span class="fc" id="L136">      }</span>
+<span class="fc" id="L137">    }</span>
+    /**
+    *Animated the explosion on the wallMap, if there is solid or broken wall, animation stop. Destroy the broken wall upon explosion
+    *@param direction ExplosionDirection value to indicate which PImage should be used
+    *@param x the pixel location of x-axis the explorsion should take placed
+    *@param y the pixel location of y-axis the explorsion should take placed
+    */
+    public void blockExplosion(ExplosionDirection direction, int x, int y) {
+      int checkMatrixX;
+      int checkMatrixY;
+<span class="fc" id="L147">      int[] explosionCoord = new int [4];</span>
+
+<span class="fc bfc" id="L149" title="All 2 branches covered.">      for (int i = 1; i &lt;= 2; i++) {</span>
+<span class="fc" id="L150">        explosionCoord = new int [4];</span>
+<span class="fc" id="L151">        explosionCoord[0] = this.x + (y*32*i);</span>
+<span class="fc" id="L152">        explosionCoord[1] = this.y + (x*32*i);</span>
+<span class="fc" id="L153">        explosionCoord[2] = this.matrixX + x*i;</span>
+<span class="fc" id="L154">        explosionCoord[3] = this.matrixY + y*i;</span>
+        //check if it is a solid wall/broken wall
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (this.wallMap[explosionCoord[2]][explosionCoord[3]].isSolid() == false) {</span>
+<span class="fc" id="L157">            this.explosionAnimationHashMap.put(explosionCoord, this.explosionHashMap.get(direction));</span>
+        } else {
+          //if it is a broken wall stop upon explosion
+<span class="fc bfc" id="L160" title="All 2 branches covered.">          if (this.wallMap[explosionCoord[2]][explosionCoord[3]].isBroken()) {</span>
+<span class="fc" id="L161">              this.explosionAnimationHashMap.put(explosionCoord, this.explosionHashMap.get(direction));</span>
+          }
+          break;
+        }
+      }
+<span class="fc" id="L166">    }</span>
+    /**
+    *Draw the entire Bomb anaimatin by combine all the methods above
+    *@param app the PApplet object
+    */
+    public void draw(PApplet app) {
+      //Bomb explode in the last 0.5 second
+<span class="fc bfc" id="L173" title="All 2 branches covered.">      if (this.index &lt;= 1) {</span>
+<span class="fc" id="L174">          this.explosionAnimationHashMap.forEach((x, y) -&gt; this.wallMap[x[2]][x[3]].destory(app));</span>
+<span class="fc" id="L175">          this.explosionAnimationHashMap.forEach((x,y) -&gt; app.image(y, x[0], x[1]));</span>
+      } else {
+        //i used reversed order
+<span class="fc" id="L178">        app.image (this.pImageArray[9-this.index], x, y);</span>
+      }
+<span class="fc" id="L180">    }</span>
+    public void tick() {
+      //use index to check which frame we are on and determine which second the time should explode
+      //the entire 150 = 60 fps in sec * 2 + 30 fps in 0.5 sec
+      //divde each part in 10 so from 2-9 the Bomb tick and 0,1 0.5 sec the Bomb explode
+<span class="fc" id="L185">      this.index = (this.timeTillExplorsion/15) % 10;</span>
+      //each time a frame pass, time going down. noted the inital Bomb time is 149, because 0 - 149 = 150
+<span class="fc" id="L187">      this.timeTillExplorsion -= 1;</span>
+      //During the explorsion, player die in the impact same as broekenWall
+<span class="fc bfc" id="L189" title="All 2 branches covered.">      if (this.index == 1) {</span>
+<span class="fc" id="L190">          this.blastDieBomb();</span>
+<span class="fc" id="L191">          this.checkDie();</span>
+      }
+<span class="fc" id="L193">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

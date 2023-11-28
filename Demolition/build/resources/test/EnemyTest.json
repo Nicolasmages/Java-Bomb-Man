@@ -1,0 +1,9 @@
+{
+  "levels": [
+    {
+      "path": "src/test/resources/level1EnenyTest.txt",
+      "time": 200
+    }
+  ],
+  "lives": 3
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Enemy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Demolition</a> &gt; <a href="index.source.html" class="el_package">demolition</a> &gt; <span class="el_source">Enemy.java</span></div><h1>Enemy.java</h1><pre class="source lang-java linenums">package demolition;
+
+import processing.core.PApplet;
+/**
+ * This is an Enemy interface that provide move pattern for all the Enemy.
+ */
+interface Enemy {
+  /**
+ *This the enemyMovePattern, the enemy walk in one direction and cycle it is walk anaimation
+ *@param app, the Papplet object
+ *@param player, Player that have the enemy moveing pattern
+ *@see &lt;a href=https://processing.github.io/processing-javadocs/core/processing/core/PApplet.html#image-processing.core.PImage-float-float-&gt;image()&lt;/a&gt;
+ */
+  public default void enemyMovePattern(Player player) {
+    //Keep walking up with corresponding walk animation cycle and update the pixel postion
+<span class="fc bfc" id="L16" title="All 2 branches covered.">    if (player.move == player.direction[0]) {</span>
+<span class="fc" id="L17">      player.y -= player.speed;</span>
+<span class="fc" id="L18">      player.setDraw(player.direction[0]);</span>
+    //Keep walking right with corresponding walk animation cycle and update the pixel postion
+<span class="fc bfc" id="L20" title="All 2 branches covered.">    } else if (player.move == player.direction[1]) {</span>
+<span class="fc" id="L21">      player.x += player.speed;</span>
+<span class="fc" id="L22">      player.setDraw(player.direction[1]);</span>
+    //Keep walking down with corresponding walk animation cycle and update the pixel postion
+<span class="fc bfc" id="L24" title="All 2 branches covered.">    } else if (player.move == player.direction[2]) {</span>
+<span class="fc" id="L25">      player.y += player.speed;</span>
+<span class="fc" id="L26">      player.setDraw(player.direction[2]);</span>
+    //Keep walking left with corresponding walk animation cycle and update the pixel postion
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">    } else if (player.move == player.direction[3]) {</span>
+<span class="fc" id="L29">      player.x -= player.speed;</span>
+<span class="fc" id="L30">      player.setDraw(player.direction[3]);</span>
+    }
+<span class="fc" id="L32">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

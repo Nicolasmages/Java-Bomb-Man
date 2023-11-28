@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EnemyRed.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Demolition</a> &gt; <a href="index.source.html" class="el_package">demolition</a> &gt; <span class="el_source">EnemyRed.java</span></div><h1>EnemyRed.java</h1><pre class="source lang-java linenums">package demolition;
+
+import processing.core.PImage;
+import processing.core.PApplet;
+
+import java.util.Random;
+/**
+*The Red Enemy that can move in random position after collided the solid or broken wall
+*/
+public class EnemyRed extends Player implements Enemy {
+    private Random random;
+    private Direction previousMove;
+    /**
+    *Constructor for Red Enemy inherited from Player
+    *@param x x-coordinate of the Red Enemy
+    *@param y y-coordinate of the Red Enemy
+    *@param matrixX  the grid position x of the Red Enemy, it indicates which row the Red Enemy is in
+    *@param matrixY  the grid position y of the Red Enemy, it indicates which column the Red Enemy is in
+    *@param map  the 2-D array that store all the wall object and its child
+    *@see Player#Player
+    *@see GameObject
+    *@see Wall
+    */
+    public EnemyRed(int x, int y, int matrixX, int matrixY, Wall[][] map) {
+<span class="fc" id="L25">      super(x, y, matrixX, matrixY, map);</span>
+<span class="fc" id="L26">      this.random = new Random();</span>
+<span class="fc" id="L27">      this.previousMove = this.move;</span>
+<span class="fc" id="L28">    }</span>
+    /**
+    *Red Enemy can auto find path after collide the wall with the help of Random Object and implementation of enemy interface
+    *@see Player#move
+    *@see Enemy
+    *@see &lt;a href=https://docs.oracle.com/javase/8/docs/api/java/util/Random.html&gt;Random&lt;/a&gt;
+    */
+    public void move() {
+<span class="fc bfc" id="L36" title="All 2 branches covered.">      while (this.checkCollide(this.move) == false) {</span>
+<span class="fc" id="L37">          this.move = direction[random.nextInt(4)];</span>
+        }
+<span class="fc" id="L39">        this.enemyMovePattern(this);</span>
+<span class="fc" id="L40">      }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

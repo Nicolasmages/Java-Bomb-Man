@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="demolition.SimpleTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2021-11-05T06:39:40" hostname="DESKTOP-U2QML5S" time="0.004">
+  <properties/>
+  <testcase name="playerBehaviourTest()" classname="demolition.SimpleTest" time="0.0"/>
+  <testcase name="wallBehaviourTest()" classname="demolition.SimpleTest" time="0.0"/>
+  <testcase name="bombBehaviourTest()" classname="demolition.SimpleTest" time="0.001"/>
+  <testcase name="bomberManBehaviourTest()" classname="demolition.SimpleTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

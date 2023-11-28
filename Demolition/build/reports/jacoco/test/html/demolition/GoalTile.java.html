@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GoalTile.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Demolition</a> &gt; <a href="index.source.html" class="el_package">demolition</a> &gt; <span class="el_source">GoalTile.java</span></div><h1>GoalTile.java</h1><pre class="source lang-java linenums">package demolition;
+
+import processing.core.PImage;
+import processing.core.PApplet;
+/**
+* The GoalTile object to indicated that BombGuy can advance to next level
+*/
+public class GoalTile extends Wall {
+    /**
+    * The Constructor for GoalTile and it is inherited by Wall object
+    *@see Wall
+    *@param x x-coordinate of the GameObject
+    *@param y y-coordinate of the GameObject
+    */
+    public GoalTile(int x, int y) {
+<span class="fc" id="L16">      super(x,y);</span>
+<span class="fc" id="L17">      this.solid = false;</span>
+<span class="fc" id="L18">      this.onGoal = true;</span>
+<span class="fc" id="L19">      this.broken = false;</span>
+<span class="fc" id="L20">    }</span>
+    /**
+    *@see Wall
+    */
+    @Override
+    public void destory(PApplet app) {
+      //Because it is not BrokenWall so doesnt change
+<span class="nc" id="L27">      return;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

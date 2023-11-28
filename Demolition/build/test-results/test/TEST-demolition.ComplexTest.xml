@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="demolition.ComplexTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2021-11-05T06:39:22" hostname="DESKTOP-U2QML5S" time="17.931">
+  <properties/>
+  <testcase name="enemyCollideTest()" classname="demolition.ComplexTest" time="3.728"/>
+  <testcase name="NoBombGuyTest()" classname="demolition.ComplexTest" time="1.336"/>
+  <testcase name="failLoadingTest()" classname="demolition.ComplexTest" time="1.029"/>
+  <testcase name="threeSixityOogaBoogaTest()" classname="demolition.ComplexTest" time="1.37"/>
+  <testcase name="loadEnemy()" classname="demolition.ComplexTest" time="2.896"/>
+  <testcase name="threeSixityBombTest()" classname="demolition.ComplexTest" time="3.676"/>
+  <testcase name="bombTest()" classname="demolition.ComplexTest" time="3.896"/>
+  <system-out><![CDATA[Bad file
+Bad file
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
