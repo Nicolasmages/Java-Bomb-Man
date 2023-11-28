@@ -24,5 +24,3 @@ An arcade-style game where you control Bomb Guy to navigate and destroy obstacle
 - Write tests in `src/test`.
 - Aim for high coverage.
 
-## Submission
-- Submit `build.gradle`, `src` folder, and a UML diagram.
